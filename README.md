@@ -1,9 +1,9 @@
 <img src="https://avatars1.githubusercontent.com/u/3853758?v=4&s=100">
 
-# OpenSIPS + RTPEngine Speech Recognition
+# OpenSIPS + RTPEngine + HEP Speech Recognition
 This repository provides a proof-of-concept OpenSIPS/RTPEngine/HEP contraption, capable of SIP/RTP recording and Speech-to-Text conversion using external APIs shipped as HEP Logs to HOMER/HEPIC, not to be used for any production purpose what-so-ever.
 
-< img src="https://i.imgur.com/SLjsWr7.png" />
+<img src="https://i.imgur.com/SLjsWr7.png" />
 
 <!--
 ### Quick Start
