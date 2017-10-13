@@ -23,14 +23,13 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get install -qqy dpkg-dev debhelper libevent-dev iptables-dev libcurl4-openssl-dev libglib2.0-dev libhiredis-dev libpcre3-dev libssl-dev libxmlrpc-core-c3-dev markdown zlib1g-dev module-assistant dkms gettext \
     libavcodec-dev libavfilter-dev libavformat-dev libjson-glib-dev libpcap-dev nfs-common \
     libbencode-perl libcrypt-rijndael-perl libdigest-hmac-perl libio-socket-inet6-perl libsocket6-perl netcat && \
-    # ( ( apt-get install -y linux-headers-$(uname -r) linux-image-$(uname -r) && \
-    #    module-assistant update && \
-    #    module-assistant auto-install ngcp-rtpengine-kernel-source ) || true ) && \
-    # ln -s /lib/modules/$(uname -r) /lib/modules/3.16.0 && \
+     ( ( apt-get install -y linux-headers-$(uname -r) linux-image-$(uname -r) && \
+        module-assistant update && \
+        module-assistant auto-install ngcp-rtpengine-kernel-source ) || true ) && \
+    ./debian/flavors/no_ngcp && \
+    dpkg-buildpackage  && \
     dpkg -i /rtpengine/*.deb && \
-    #cp /lib/modules/$(uname -r)/extra/xt_RTPENGINE.ko /rtpengine/xt_RTPENGINE.ko && \
     apt-get clean
-
     
 RUN apt-get purge -y bison build-essential ca-certificates flex git m4 pkg-config curl  && \
     apt-get autoremove -y && \
