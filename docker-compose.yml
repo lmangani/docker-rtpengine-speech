@@ -1,7 +1,7 @@
 version: '2.2'
 services:
   opensips-rec:
-    image: qxip/docker-rtpengine-record
+    image: qxip/docker-rtpengine-speech
     privileged: true
     restart: always
     environment:
