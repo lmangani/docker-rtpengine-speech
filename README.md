@@ -9,16 +9,16 @@ This repository provides a proof-of-concept OpenSIPS/RTPEngine/HEP contraption, 
 ### Quick Start
 Automated builds of the image are available on [DockerHub](https://hub.docker.com/r/qxip/homer-hepswitch)
 ```sh
-$ docker pull qxip/docker-rtpengine-record
+$ docker pull qxip/docker-rtpengine-speech
 ```
 -->
 
 ### Custom Build w/ RTPEngine kernel modules
-In order for RTPEngine to insert and use its kernel recording modules on a given system, the container must be built for the specific OS kernel w/ corresponding modules, etc.
+In order for RTPEngine to insert and use its kernel recording modules on a given system, the container must be built for the specific underlying OS kernel version. Please use the ```dev``` branch to produce a source-compiled build.
 ```
-git clone https://github.com/lmangani/docker-rtpagent-record
-cd docker-rtpagent-record
-docker build -t qxip/docker-rtpengine-record .
+git clone https://github.com/lmangani/docker-rtpagent-speech
+cd docker-rtpagent-speech
+docker build -t qxip/docker-rtpengine-speech .
 ```
 
 ### Usage
