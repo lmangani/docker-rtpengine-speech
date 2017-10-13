@@ -22,7 +22,7 @@ docker build -t qxip/docker-rtpengine-record .
 ```
 
 ### Usage
-Use docker-compose to manage the containerïstatus¼š
+Use docker-compose to manage the container status
 ```sh
 $ docker-compose up
 ```
