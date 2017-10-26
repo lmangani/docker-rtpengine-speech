@@ -36,6 +36,9 @@ expect \"END\"
 sed -i "s/advertised_address=.*/advertised_address=\"${ADVERTISED_IP}\"/g" /usr/local/etc/opensips/opensips.cfg
 sed -i "s/listen=udp.*/listen=udp:${HOST_IP}:${ADVERTISED_PORT}/g" /usr/local/etc/opensips/opensips.cfg
 sed -i "s/listen=ws.*/listen=ws:${HOST_IP}:${WSS_PORT}/g" /usr/local/etc/opensips/opensips.cfg
+# Configure HOMER target
+sed -i "s/127.0.0.1:9060/${HOMER_SERVER}:${HOMER_PORT}/g" /usr/local/etc/opensips/opensips.cfg
+
 
 # Prepare RTPEngine modules
 mkdir /lib/modules/$(uname -r)/updates
