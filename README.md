@@ -3,6 +3,8 @@
 # OpenSIPS + RTPEngine + HEP Speech Recognition
 This repository provides a proof-of-concept OpenSIPS/RTPEngine/HEP contraption, capable of SIP/RTP recording and Speech-to-Text conversion using external APIs shipped as HEP Logs to HOMER/HEPIC, not to be used for any production purpose what-so-ever.
 
+For a full explanation, check this post on the [OpenSIPS Blog](https://blog.opensips.org/2018/02/16/audio-recording-and-speech-detection-experiments-with-opensips/)
+
 <img src="https://i.imgur.com/SLjsWr7.png" />
 
 <!--
