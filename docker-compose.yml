@@ -1,6 +1,7 @@
 version: '2.2'
 services:
   opensips-rec:
+    build: .
     image: qxip/docker-rtpengine-speech
     privileged: true
     restart: always
@@ -9,10 +10,14 @@ services:
       ADVERTISED_RANGE_LAST: 20100
       HOMER_SERVER: '127.0.0.1'
       HOMER_PORT: 9060
-      BING_KEY: 'YOUR_KEY_HERE'
+      BING_KEY: ${BING_KEY}
     volumes:
        - /var/lib/mysql
        - /recording
+       - conf/opensipsctlrc:/usr/local/etc/opensips/opensipsctlrc
+       - conf/opensips-rtpengine.cfg:/usr/local/etc/opensips/opensips.cfg
+       - rtpengine/rtpengine-recording.conf:/etc/rtpengine/rtpengine-recording.conf
+       - boot_run.sh:/etc/boot_run.sh
     ports:
       - "9060:9060/udp"
       - "5060:5060/udp"

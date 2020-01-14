@@ -1,9 +1,9 @@
 FROM debian:jessie
-MAINTAINER "Lorenzo Mangani <lorenzo.mangani@gmail.com>"
+LABEL MAINTAINER "Lorenzo Mangani <lorenzo.mangani@gmail.com>"
 
 USER root
 
-RUN apt-get update && apt-get install -y sudo git make bison flex curl && \
+RUN apt-get update && apt-get install -y sudo git make bison flex curl libz-dev libssl-dev x11-apps && \
     echo "mysql-server mysql-server/root_password password passwd" | sudo debconf-set-selections && \
     echo "mysql-server mysql-server/root_password_again password passwd" | sudo debconf-set-selections && \
     apt-get install -y mysql-server libmysqlclient-dev \
@@ -31,21 +31,13 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     #cp /lib/modules/$(uname -r)/extra/xt_RTPENGINE.ko /rtpengine/xt_RTPENGINE.ko && \
     apt-get clean
 
-    
 RUN apt-get purge -y bison build-essential ca-certificates flex git m4 pkg-config curl  && \
     apt-get autoremove -y && \
     apt-get install -y libmicrohttpd10 rsyslog ngrep && \
     apt-get clean
 
-COPY conf/opensipsctlrc /usr/local/etc/opensips/opensipsctlrc
-COPY conf/opensips-rtpengine.cfg /usr/local/etc/opensips/opensips.cfg
-COPY rtpengine/rtpengine-recording.conf /etc/rtpengine/rtpengine-recording.conf
-
-COPY boot_run.sh /etc/boot_run.sh
-RUN chown root.root /etc/boot_run.sh && chmod 700 /etc/boot_run.sh
-
 RUN apt install -y curl git && \
-    curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && \
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && \
     apt-get install -y nodejs && \
     cd /opt && git clone https://github.com/lmangani/RTPEngine-Speech2Text && \
     cd RTPEngine-Speech2Text && npm install && npm install -g forever
@@ -56,5 +48,9 @@ EXPOSE 9060/udp
 EXPOSE 9060/tcp
 EXPOSE 6060/udp
 EXPOSE 20000-20100/udp
-
+COPY conf/opensipsctlrc /usr/local/etc/opensips/opensipsctlrc
+COPY conf/opensips-rtpengine.cfg /usr/local/etc/opensips/opensips.cfg
+COPY rtpengine/rtpengine-recording.conf /etc/rtpengine/rtpengine-recording.conf
+COPY boot_run.sh /etc/boot_run.sh
+RUN chown root.root /etc/boot_run.sh && chmod 700 /etc/boot_run.sh
 ENTRYPOINT ["/etc/boot_run.sh"]
