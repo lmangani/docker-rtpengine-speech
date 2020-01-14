@@ -14,6 +14,10 @@ services:
     volumes:
        - /var/lib/mysql
        - /recording
+       - conf/opensipsctlrc:/usr/local/etc/opensips/opensipsctlrc
+       - conf/opensips-rtpengine.cfg:/usr/local/etc/opensips/opensips.cfg
+       - rtpengine/rtpengine-recording.conf:/etc/rtpengine/rtpengine-recording.conf
+       - boot_run.sh:/etc/boot_run.sh
     ports:
       - "9060:9060/udp"
       - "5060:5060/udp"
