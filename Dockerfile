@@ -39,7 +39,7 @@ RUN apt-get purge -y bison build-essential ca-certificates flex git m4 pkg-confi
 RUN apt install -y curl git && \
     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && \
     apt-get install -y nodejs && \
-    cd /opt && git clone https://github.com/Broadshield/RTPEngine-Speech2Text && \
+    cd /opt && git clone https://github.com/lmangani/RTPEngine-Speech2Text && \
     cd RTPEngine-Speech2Text && npm install && npm install -g forever
 
 EXPOSE 5060/udp
