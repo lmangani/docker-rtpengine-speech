@@ -10,7 +10,7 @@ services:
       ADVERTISED_RANGE_LAST: 20100
       HOMER_SERVER: '127.0.0.1'
       HOMER_PORT: 9060
-      BING_KEY: '16c2cf07d3c04984b4513e4e41d76575'
+      BING_KEY: ${BING_KEY}
     volumes:
        - /var/lib/mysql
        - /recording
