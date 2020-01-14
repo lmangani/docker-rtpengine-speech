@@ -1,6 +1,7 @@
 version: '2.2'
 services:
   opensips-rec:
+    build: .
     image: qxip/docker-rtpengine-speech
     privileged: true
     restart: always
@@ -9,7 +10,7 @@ services:
       ADVERTISED_RANGE_LAST: 20100
       HOMER_SERVER: '127.0.0.1'
       HOMER_PORT: 9060
-      BING_KEY: 'YOUR_KEY_HERE'
+      BING_KEY: '16c2cf07d3c04984b4513e4e41d76575'
     volumes:
        - /var/lib/mysql
        - /recording

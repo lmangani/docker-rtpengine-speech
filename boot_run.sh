@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 # OpenSIPS Docker bootstrap
 
 MYSQL_PWD=${MYSQL_PWD:-"passwd"}
@@ -8,14 +9,14 @@ ADVERTISED_PORT=${ADVERTISED_PORT:-"5060"}
 ADVERTISED_RANGE_FIRST=${ADVERTISED_RANGE_FIRST:-"20000"}
 ADVERTISED_RANGE_LAST=${ADVERTISED_RANGE_LAST:-"20100"}
 WSS_PORT=${WSS_PORT:-"5061"}
-
+mkdir -p /lib/modules/$(uname -r)/updates
 HOST_IP=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
 
 echo "Your IP : ${HOST_IP}"
 echo "Public IP : ${EXTERNAL_IP}"
 echo -e "Advertised IP:PORT : ${ADVERTISED_IP}:${ADVERTISED_PORT}\n\n"
 echo -e "Advertised RTP Range : ${ADVERTISED_RANGE_FIRST}-${ADVERTISED_RANGE_LAST}\n\n"
-
+uname -r
 # Starting MySQL
 service mysql start
 
@@ -38,11 +39,11 @@ sed -i "s/listen=udp.*/listen=udp:${HOST_IP}:${ADVERTISED_PORT}/g" /usr/local/et
 sed -i "s/listen=ws.*/listen=ws:${HOST_IP}:${WSS_PORT}/g" /usr/local/etc/opensips/opensips.cfg
 
 # Prepare RTPEngine modules
-mkdir /lib/modules/$(uname -r)/updates
-cp -u /rtpengine/xt_RTPENGINE.ko "/lib/modules/$(uname -r)/updates/xt_RTPENGINE.ko"
+
+cp -fu /rtpengine/xt_RTPENGINE.ko "/lib/modules/$(uname -r)/updates/xt_RTPENGINE.ko"
 depmod -a
 modprobe xt_RTPENGINE
-mkdir /recording
+mkdir -p /recording
 # Starting RTPEngine process
 echo 'del 0' > /proc/rtpengine/control || true
 rtpengine-recording --config-file=/etc/rtpengine/rtpengine-recording.conf
