@@ -1,6 +1,4 @@
-FROM debian:jessie
-MAINTAINER "Lorenzo Mangani <lorenzo.mangani@gmail.com>"
-
+FROM debian:12
 USER root
 
 RUN apt-get update && apt-get install -y sudo git make bison flex curl && \
@@ -12,11 +10,11 @@ RUN apt-get update && apt-get install -y sudo git make bison flex curl && \
 
 RUN curl ipinfo.io/ip > /etc/public_ip.txt
 
-RUN git clone https://github.com/OpenSIPS/opensips.git -b 2.2 ~/opensips_2_2 && \
-    sed -i 's/db_http db_mysql db_oracle/db_http db_oracle/g' ~/opensips_2_2/Makefile.conf.template && \
-    cd ~/opensips_2_2 && \
+RUN git clone https://github.com/OpenSIPS/opensips.git -b 3.4 ~/opensips_34 && \
+    sed -i 's/db_http db_mysql db_oracle/db_http db_oracle/g' ~/opensips_34/Makefile.conf.template && \
+    cd ~/opensips_34 && \
     make all && make prefix=/usr/local install && \
-    cd .. && rm -rf ~/opensips_2_2
+    cd .. && rm -rf ~/opensips_34
 
 COPY /rtpengine /rtpengine
 RUN export DEBIAN_FRONTEND=noninteractive && \
@@ -45,9 +43,9 @@ COPY boot_run.sh /etc/boot_run.sh
 RUN chown root.root /etc/boot_run.sh && chmod 700 /etc/boot_run.sh
 
 RUN apt install -y curl git && \
-    curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && \
+    curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash - && \
     apt-get install -y nodejs && \
-    cd /opt && git clone https://github.com/lmangani/RTPEngine-Speech2Text && \
+    cd /opt && git clone https://github.com/QXIP/RTPEngine-Speech2Text && \
     cd RTPEngine-Speech2Text && npm install && npm install -g forever
 
 EXPOSE 5060/udp
