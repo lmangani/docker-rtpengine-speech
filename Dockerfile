@@ -4,8 +4,9 @@ USER root
 RUN apt-get update && apt-get install -y sudo git make bison flex curl && \
     echo "mysql-server mysql-server/root_password password passwd" | sudo debconf-set-selections && \
     echo "mysql-server mysql-server/root_password_again password passwd" | sudo debconf-set-selections && \
-    apt-get install -y mysql-server libmysqlclient-dev \
-                       libncurses5 libncurses5-dev mysql-client expect && \
+    apt-get install -y mariadb-server mariadb-client libmariadb-dev \
+                       libncurses5 libncurses5-dev expect wget \
+		       gnupg lsb-release libmariadb-dev-compat && \
     apt-get clean
 
 RUN curl ipinfo.io/ip > /etc/public_ip.txt
@@ -16,23 +17,15 @@ RUN git clone https://github.com/OpenSIPS/opensips.git -b 3.4 ~/opensips_34 && \
     make all && make prefix=/usr/local install && \
     cd .. && rm -rf ~/opensips_34
 
-COPY /rtpengine /rtpengine
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    apt-get install -qqy dpkg-dev debhelper libevent-dev iptables-dev libcurl4-openssl-dev libglib2.0-dev libhiredis-dev libpcre3-dev libssl-dev libxmlrpc-core-c3-dev markdown zlib1g-dev module-assistant dkms gettext \
-    libavcodec-dev libavfilter-dev libavformat-dev libjson-glib-dev libpcap-dev nfs-common \
-    libbencode-perl libcrypt-rijndael-perl libdigest-hmac-perl libio-socket-inet6-perl libsocket6-perl netcat && \
-    # ( ( apt-get install -y linux-headers-$(uname -r) linux-image-$(uname -r) && \
-    #    module-assistant update && \
-    #    module-assistant auto-install ngcp-rtpengine-kernel-source ) || true ) && \
-    # ln -s /lib/modules/$(uname -r) /lib/modules/3.16.0 && \
-    dpkg -i /rtpengine/*.deb && \
-    #cp /lib/modules/$(uname -r)/extra/xt_RTPENGINE.ko /rtpengine/xt_RTPENGINE.ko && \
-    apt-get clean
-
+RUN wget https://rtpengine.dfx.at/latest/pool/main/r/rtpengine-dfx-repo-keyring/rtpengine-dfx-repo-keyring_1.0_all.deb && \
+	dpkg -i rtpengine-dfx-repo-keyring_1.0_all.deb && \
+	echo "deb [signed-by=/usr/share/keyrings/dfx.at-rtpengine-archive-keyring.gpg] https://rtpengine.dfx.at/latest bookworm main" | sudo tee /etc/apt/sources.list.d/dfx.at-rtpengine.list && \
+	apt install -y rtpengine && \
+	apt clean
     
 RUN apt-get purge -y bison build-essential ca-certificates flex git m4 pkg-config curl  && \
     apt-get autoremove -y && \
-    apt-get install -y libmicrohttpd10 rsyslog ngrep && \
+    apt-get install -y  rsyslog ngrep && \
     apt-get clean
 
 COPY conf/opensipsctlrc /usr/local/etc/opensips/opensipsctlrc
